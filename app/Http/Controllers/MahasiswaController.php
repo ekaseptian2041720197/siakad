@@ -14,8 +14,14 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
+        //pencarian
+        $mahasiswa = Mahasiswa::latest();
+        if(request('search')){
+            $mahasiswa->where('nama', 'like', '%' . request('search') . '%'); //mencari bedasarkan nama 
+        }
+
         //fungsi eloquent menampilkan data menggunakan pagination 
-       $mahasiswa = $mahasiswa = DB::table('mahasiswa')->get(); // Mengambil semua isi tabel
+       $mahasiswa = $mahasiswa ->paginate(3) ->withQueryString(); // Mengambil semua isi tabel
 
         // Mengambil semua isi tabel 
         $posts = Mahasiswa::orderBy('nim', 'desc')->paginate(6);      
@@ -48,6 +54,9 @@ class MahasiswaController extends Controller
             'nama' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
+            'email' => 'required',
+            'alamat' => 'required',
+            'ttl' => 'required',
         ]);
 
         //fungsi eloquent untuk menambah data
@@ -94,10 +103,13 @@ class MahasiswaController extends Controller
     {
         //melakukan validasi data
         $data= $request->validate([
-        'nim' => 'required',
-        'nama' => 'required',
-        'kelas' => 'required',
-        'jurusan' => 'required',
+            'nim' => 'required',
+            'nama' => 'required',
+            'kelas' => 'required',
+            'jurusan' => 'required',
+            'email' => 'required',
+            'alamat' => 'required',
+            'ttl' => 'required',
         ]);
         //fungsi eloquent untuk mengupdate data inputan kita
         //memanggil nama kolom dalam model mahasiswa yang sesuai dengan id mahasiswa yg di req

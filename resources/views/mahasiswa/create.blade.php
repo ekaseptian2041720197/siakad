@@ -35,6 +35,18 @@
                         <input type="Jurusan" name="jurusan" class="form-control" id="Jurusan"
                             ariadescribedby="Jurusan">
                     </div>
+                    <div class="form-group">
+                        <label for="Email">Email</label>
+                        <input type="Email" name="email" class="form-control" id="email" ariadescribedby="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="Alamat">Alamat</label>
+                        <input type="Alamat" name="alamat" class="form-control" id="alamat" ariadescribedby="alamat">
+                    </div>
+                    <div class="form-group">
+                        <label for="TTL">Tempat, Tanggal Lahir</label>
+                        <input type="TTL" name="ttl" class="form-control" id="ttl" ariadescribedby="ttl">
+                    </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>

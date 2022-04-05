@@ -5,6 +5,7 @@
         <div class="pull-left mt-2">
             <h2>JURUSAN TEKNOLOGI INFORMASI-POLITEKNIK NEGERI MALANG</h2>
         </div>
+        @include('mahasiswa.search')
         <div class="float-right my-2">
             <a class="btn btn-success" href="{{ route('mahasiswa.create') }}"> Input Mahasiswa</a>
         </div>
@@ -38,7 +39,10 @@
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
-    </tr>
+    </tr>  
     @endforeach
 </table>
+<div class="d-flex justify-content-end">  
+    {{ $mahasiswa->links() }}
+</div>
 @endsection
