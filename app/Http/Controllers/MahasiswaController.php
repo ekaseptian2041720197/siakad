@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Kelas;
 use Illuminate\Http\Request;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +38,8 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
-        return view('mahasiswa.create');
+        $kelas = kelas::all(); //mendapatkan data dari tabel kelas
+        return view('mahasiswa.create', ['kelas'=>$kelas]);
     }
 
     /**
@@ -59,12 +61,25 @@ class MahasiswaController extends Controller
             'ttl' => 'required',
         ]);
 
-        //fungsi eloquent untuk menambah data
-        Mahasiswa::create($request->all());
+        $mahasiswa = new Mahasiswa;
+        $mahasiswa->nim = $request->get('nim');
+        $mahasiswa->nama = $request->get('nama');
+        $mahasiswa->jurusan = $request->get('jurusan');
+        $mahasiswa->save();
+        
+        $kelas = new kelas;
+        $kelas-> id = $request->get('kelas');
+
+        //fungsi eloquent untuk menambahkan data dengan relasi belongsTo
+        $mahasiswa->kelas()->associate($kelas);
+        $mahasiswa->save();
+       
         //jika data berhasil ditambahkan, akan kembali ke halaman utama
         return redirect()->route('mahasiswa.index')
         ->with('success', 'Mahasiswa Berhasil Ditambahkan');
+        
     }
+
 
     /**
      * Display the specified resource.
@@ -128,9 +143,8 @@ class MahasiswaController extends Controller
      */
     public function destroy(Mahasiswa $mahasiswa)
     {
-        //fungsi eloquent untuk menghapus data
-        Mahasiswa::where('id_mahasiswa',$mahasiswa->id_mahasiswa)->delete();
-        return redirect()->route('mahasiswa.index')
-            -> with('success', 'Mahasiswa Berhasil Dihapus');  
+        $mahasiswa = Mahasiswa::with('kelas')->get();
+        $paginate = Mahasiswa::orderBy('id_mahasiswa', 'asc')->paginate(3);
+        return view('mahasiswa.index', ['mahasiswa' => $mahasiswa, 'paginate' => $paginate]);
     }
 }
